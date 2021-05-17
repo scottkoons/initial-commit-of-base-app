@@ -8,7 +8,7 @@ function App() {
   return (
     <div className='App'>
       <h1>Lights Out!</h1>
-      <Board nrows={2} ncols={2} chanceLightStartsOn={0.25} />
+      <Board nrows={5} ncols={5} chanceLightStartsOn={0.5} />
     </div>
   );
 }

@@ -8,5 +8,8 @@
 
 .Cell-lit {
   background-color: white;
-  content: "hello";
+}
+
+.Cell-lit:before {
+   content: "ON";
 }
