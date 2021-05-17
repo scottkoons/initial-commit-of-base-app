@@ -27,18 +27,27 @@ import "./Board.css";
  *
  **/
 
-function Board({ nrows, ncols, chanceLightStartsOn }) {
+function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = .25 }) {
   const [board, setBoard] = useState(createBoard());
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   function createBoard() {
     let initialBoard = [];
     // TODO: create array-of-arrays of true/false values
+    for (let r = 0; r < nrows; r++) {
+      const rowArray = [];
+      // Creates the array or arrays for t/f values on board
+      for (let c = 0; c < ncols; c++) {
+        rowArray.push(Math.random() < chanceLightStartsOn);
+      }
+      initialBoard.push(rowArray);
+    }
     return initialBoard;
   }
 
   function hasWon() {
     // TODO: check the board in state to determine whether the player has won.
+    return board.every((r) => r.every((c) => !c));
   }
 
   function flipCellsAround(coord) {
@@ -54,20 +63,52 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
       };
 
       // TODO: Make a (deep) copy of the oldBoard
+      const newBoard = oldBoard.map((r) => [...r]);
 
       // TODO: in the copy, flip this cell and the cells around it
-
+      // current
+      flipCell(y, x, newBoard);
+      // below
+      flipCell(y - 1, x, newBoard);
+      // above
+      flipCell(y + 1, x, newBoard);
+      // left
+      flipCell(y, x - 1, newBoard);
+      // right
+      flipCell(y, x + 1, newBoard);
       // TODO: return the copy
+      return newBoard;
     });
   }
 
-  // if the game is won, just show a winning msg & render nothing else
+  // Check for winning game
+  if (hasWon()) {
+    return <div>You turned off all the lights! Winner!</div>;
+  }
+  // TODO- make table board
+  const boardRows = () => {
+    return board.map((r, rowIdx) => (
+      <tr key={rowIdx}>
+        {r.map((c, colIdx) => (
+          <Cell
+            key={`${rowIdx}-${colIdx}`}
+            coords={`${rowIdx}-${colIdx}`}
+            flipCellsAroundMe={flipCellsAround}
+            isLit={c}
+          />
+        ))}
+      </tr>
+    ));
+  };
+  return (
+    // if the game is won, just show a winning msg & render nothing else
+    <table className='Board'>
+      <tbody>{boardRows()}</tbody>
+    </table>
+  );
+};
 
-  // TODO
 
-  // make table board
 
-  // TODO
-}
 
 export default Board;

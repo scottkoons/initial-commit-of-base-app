@@ -3,8 +3,10 @@
   width: 100px;
   background-color: darkgray;
   cursor: pointer;
+  border: solid red 1px;
 }
 
 .Cell-lit {
   background-color: white;
+  content: "hello";
 }
